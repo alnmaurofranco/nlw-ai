@@ -1,4 +1,3 @@
-import { Button } from './components/ui/button'
 import {
   Select,
   SelectContent,
@@ -6,21 +5,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Button } from './components/ui/button'
 
-import { Github, Wand2 } from 'lucide-react'
+import { CopyCheckIcon, CopyIcon, Wand2 } from 'lucide-react'
 import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
 import { Slider } from './components/ui/slider'
 import { Textarea } from './components/ui/textarea'
 
-import { VideoInputForm } from './components/video-input-form'
-import { PromptSelect } from './components/prompt-select'
-import { useState } from 'react'
 import { useCompletion } from 'ai/react'
+import { useState } from 'react'
+import { MenuNavigation } from './components/menu-navigation'
+import { PromptSelect } from './components/prompt-select'
+import { VideoInputForm } from './components/video-input-form'
 
 export function App() {
   const [temperature, setTemperature] = useState(0.5)
   const [videoId, setVideoId] = useState<string | null>(null)
+  const [copied, setCopied] = useState<boolean>(false)
+
+  async function handleCopyText(textCompletion: string) {
+    try {
+      await navigator.clipboard.writeText(textCompletion)
+      setCopied(true)
+      setTimeout(() => {
+        setCopied(false)
+      }, 2000)
+    } catch (error) {
+      console.log('Erro ao copiar texto')
+    }
+  }
 
   const {
     input,
@@ -42,20 +56,7 @@ export function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="px-6 py-3 flex items-center justify-between border-b">
-        <h1 className="text-xl font-bold">upload.ai</h1>
-
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-muted-foreground">
-            Desenvolvido com 💚 no NLW da Rocketseat
-          </span>
-          <Separator orientation="vertical" className="h-6" />
-          <Button variant="outline">
-            <Github className="w-4 h-4 mr-2" />
-            GitHub
-          </Button>
-        </div>
-      </div>
+      <MenuNavigation />
 
       <main className="flex-1 p-6 flex gap-6">
         {/* Sidebar */}
@@ -106,7 +107,12 @@ export function App() {
 
             <Separator />
 
-            <Button disabled={isLoading} type="submit" className="w-full">
+            <Button
+              disabled={isLoading}
+              variant="secondary"
+              type="submit"
+              className="w-full"
+            >
               Executar
               <Wand2 className="w-4 h-4 ml-2" />
             </Button>
@@ -128,6 +134,19 @@ export function App() {
               readOnly
               value={completion}
             />
+            <Button type="button" onClick={() => handleCopyText(completion)}>
+              {copied ? (
+                <>
+                  <CopyCheckIcon className="w-4 h-4 mr-2" />
+                  Copiado
+                </>
+              ) : (
+                <>
+                  <CopyIcon className="w-4 h-4 mr-2" />
+                  Copiar
+                </>
+              )}
+            </Button>
           </div>
 
           <p className="text-sm to-muted-foreground">

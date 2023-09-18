@@ -130,7 +130,7 @@ export function VideoInputForm({ onVideoUploaded }: VideoInputFormProps) {
           data-success={status === 'success'}
           disabled={status !== 'waiting'}
           type="submit"
-          className="w-full data-[success=true]:bg-emerald-400"
+          className="w-full data-[success=true]:bg-emerald-400 data-[success=true]:text-emerald-950"
         >
           {status === 'waiting' ? (
             <>
