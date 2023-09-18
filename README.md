@@ -106,8 +106,10 @@ cd server && pnpm start:dev
 ## 💫 Milha extra
 
 - [x] ESLint & Prettier
+- [x] React Hook Form
 - [x] Zod no front-end
-- [x] Criação de um prompt
+- [x] Funcionalidade para copiar resultado
+- [x] Funcionalidade de criação de uma prompt
 
 
 ## 📝 Licença
